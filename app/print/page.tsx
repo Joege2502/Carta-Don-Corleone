@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import menuData from "../data/menuData.json";
 import Image from "next/image";
 
@@ -28,6 +31,14 @@ const SAMPLE_IMAGES: Record<string, string> = {
 };
 
 export default function PrintMenuPage() {
+  // Se gatilla la ventana del navegador para imprimir/guardar como PDF de forma automática al abrir
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.print();
+    }, 500); // Pequeño delay de 500ms para asegurar que las imágenes y fuentes terminen de renderizar
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       {/* Inyección de regla CSS para forzar impresión en HORIZONTAL sin márgenes */}

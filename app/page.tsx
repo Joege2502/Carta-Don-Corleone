@@ -35,23 +35,15 @@ export default function MenuPage() {
     menuData.categories[0].id,
   );
 
+  // Estado para controlar el menú flotante hamburguesa
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const selectedCategoryData = menuData.categories.find(
     (cat) => cat.id === activeCategory,
   );
 
   return (
     <main className="min-h-screen text-white font-sans w-full max-w-md mx-auto flex flex-col relative bg-transparent shadow-2xl">
-      {/* Botón Puente hacia la Versión de Impresión / PDF */}
-      <a
-        href="/print"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-4 right-4 z-40 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs uppercase px-4 py-3 rounded-2xl shadow-2xl border border-amber-300 flex items-center gap-2 transition-all cursor-pointer"
-        title="Abrir versión imprimible"
-      >
-        <span>📄</span> Ver Versión Imprimible
-      </a>
-
       {/* Header Fijo */}
       <header className="sticky top-0 z-30 bg-neutral-950/95 backdrop-blur-md border-b border-amber-950/60 px-4 py-3 text-center shadow-xl">
         <div className="flex justify-center mb-1">
@@ -174,6 +166,55 @@ export default function MenuPage() {
             </div>
           </section>
         ))}
+      </div>
+
+      {/* Menú Flotante Estilo Hamburguesa (Abajo a la derecha) */}
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-2">
+        {/* Opciones desplegables cuando el menú está abierto */}
+        {isMenuOpen && (
+          <div className="flex flex-col gap-2 mb-2 animate-in fade-in slide-in-from-bottom-3 duration-200">
+            <a
+              href="/print"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMenuOpen(false)}
+              className="bg-neutral-900 hover:bg-neutral-800 text-white px-4 py-2.5 rounded-xl shadow-xl border border-amber-500/40 flex items-center gap-2 text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer"
+            >
+              <span>🖨️</span>
+              <span>Imprimir / Guardar PDF</span>
+            </a>
+          </div>
+        )}
+
+        {/* Botón Circular Principal con el Icono de Hamburguesa */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="w-14 h-14 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white rounded-full shadow-2xl shadow-red-950/90 border-2 border-amber-400/70 flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer focus:outline-none"
+          aria-label="Menú de opciones"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {isMenuOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
+          </svg>
+        </button>
       </div>
     </main>
   );
