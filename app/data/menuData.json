@@ -1,0 +1,100 @@
+{
+  "restaurant": {
+    "name": "Don Corleone",
+    "subtitle": "Pizzas artesanales, siente la diferencia en cada bocado"
+  },
+  "categories": [
+    {
+      "id": "entradas-pastas",
+      "name": "Entradas y Pastas",
+      "sections": [
+        {
+          "title": "Entradas",
+          "items": [
+            {
+              "id": "pan-ajo-especial",
+              "name": "Pan al Ajo Especial",
+              "description": "Queso mozzarella, ajos en aceite de oliva, tocino, orégano (5 unidades)",
+              "price": 15.0,
+              "image": "/images/pan-ajo-especial.jpg"
+            }
+          ]
+        },
+        {
+          "title": "Pastas",
+          "items": [
+            {
+              "id": "lasagna-bolognesa",
+              "name": "Lasagna Bolognesa",
+              "description": "Salsa bolognesa casera, queso mozzarella y jamón especial",
+              "price": 25.0,
+              "image": "/images/lasagna.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pizzas",
+      "name": "Pizzas",
+      "sections": [
+        {
+          "title": "Pizzas Clásicas",
+          "items": [
+            {
+              "id": "la-barbi",
+              "name": "LA BARBI",
+              "description": "Queso M, cebolla, tomate, pimienta, champiñones, aceitunas",
+              "image": "/images/la-barbi.jpg",
+              "prices": {
+                "personal": 20.0,
+                "mediana": 32.0,
+                "familiar": 45.0
+              }
+            },
+            {
+              "id": "romana",
+              "name": "ROMANA",
+              "description": "Queso M, salchicha, cebolla",
+              "image": "/images/romana.jpg",
+              "prices": {
+                "personal": 20.0,
+                "mediana": 30.0,
+                "familiar": 40.0
+              }
+            },
+            {
+              "id": "al-tono",
+              "name": "AL TONO",
+              "description": "Queso M, atún, cebolla, orégano",
+              "image": "/images/al-tono.jpg",
+              "prices": {
+                "personal": 20.0,
+                "mediana": 30.0,
+                "familiar": 40.0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "salchipapas",
+      "name": "Salchipapas",
+      "sections": [
+        {
+          "title": "Salchipapas",
+          "items": [
+            {
+              "id": "salchipapa-clasica",
+              "name": "Clásica",
+              "description": "Salchicha premium con papas crocantes y cremas de la casa",
+              "price": 15.0,
+              "image": "/images/salchipapa-clasica.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
