@@ -19,17 +19,6 @@ interface MenuItem {
   prices?: PizzaPrices;
 }
 
-const SAMPLE_IMAGES: Record<string, string> = {
-  default:
-    "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80",
-  pizzas:
-    "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=500&q=80",
-  salchipapas:
-    "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500&q=80",
-  pastas:
-    "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=500&q=80",
-};
-
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState(
     menuData.categories[0].id,
@@ -111,12 +100,12 @@ export default function MenuPage() {
                   </div>
 
                   <div className="flex gap-3 items-center w-full">
-                    <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-amber-500/20 shadow-md flex-shrink-0">
+                    {/* Imagen Local con carga diferida (lazy) */}
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-amber-500/20 shadow-md flex-shrink-0 bg-neutral-900">
                       <img
-                        src={
-                          SAMPLE_IMAGES[activeCategory] || SAMPLE_IMAGES.default
-                        }
+                        src={item.image || "/images/default.jpg"}
                         alt={item.name}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                       />
                     </div>

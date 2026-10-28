@@ -16,7 +16,7 @@
               "name": "Pan al Ajo Especial",
               "description": "Queso mozzarella, ajos en aceite de oliva, tocino, orégano (5 unidades)",
               "price": 15.0,
-              "image": "/images/pan-ajo-especial.jpg"
+              "image": "/images/menu/pan-ajo-especial.webp"
             }
           ]
         },
@@ -28,7 +28,7 @@
               "name": "Lasagna Bolognesa",
               "description": "Salsa bolognesa casera, queso mozzarella y jamón especial",
               "price": 25.0,
-              "image": "/images/lasagna.jpg"
+              "image": "/images/menu/lasagna.jpg"
             }
           ]
         }
@@ -45,7 +45,7 @@
               "id": "la-barbi",
               "name": "LA BARBI",
               "description": "Queso M, cebolla, tomate, pimienta, champiñones, aceitunas",
-              "image": "/images/la-barbi.jpg",
+              "image": "/images/menu/la-barbi.avif",
               "prices": {
                 "personal": 20.0,
                 "mediana": 32.0,
@@ -56,7 +56,7 @@
               "id": "romana",
               "name": "ROMANA",
               "description": "Queso M, salchicha, cebolla",
-              "image": "/images/romana.jpg",
+              "image": "/images/menu/romana.jpg",
               "prices": {
                 "personal": 20.0,
                 "mediana": 30.0,
@@ -67,7 +67,7 @@
               "id": "al-tono",
               "name": "AL TONO",
               "description": "Queso M, atún, cebolla, orégano",
-              "image": "/images/al-tono.jpg",
+              "image": "/images/menu/al-tono.jpg",
               "prices": {
                 "personal": 20.0,
                 "mediana": 30.0,
@@ -90,7 +90,7 @@
               "name": "Clásica",
               "description": "Salchicha premium con papas crocantes y cremas de la casa",
               "price": 15.0,
-              "image": "/images/salchipapa-clasica.jpg"
+              "image": "/images/menu/salchipapa-clasica.jpg"
             }
           ]
         }

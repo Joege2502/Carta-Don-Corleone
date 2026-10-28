@@ -19,23 +19,12 @@ interface MenuItem {
   prices?: PizzaPrices;
 }
 
-const SAMPLE_IMAGES: Record<string, string> = {
-  default:
-    "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80",
-  pizzas:
-    "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=500&q=80",
-  salchipapas:
-    "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500&q=80",
-  pastas:
-    "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=500&q=80",
-};
-
 export default function PrintMenuPage() {
   // Se gatilla la ventana del navegador para imprimir/guardar como PDF de forma automática al abrir
   useEffect(() => {
     const timer = setTimeout(() => {
       window.print();
-    }, 500); // Pequeño delay de 500ms para asegurar que las imágenes y fuentes terminen de renderizar
+    }, 500); // Pequeño delay de 500ms para asegurar que las imágenes locales terminen de renderizar
     return () => clearTimeout(timer);
   }, []);
 
@@ -100,14 +89,11 @@ export default function PrintMenuPage() {
                         key={item.id}
                         className="w-full bg-neutral-950/90 backdrop-blur-sm border border-amber-900/40 rounded-xl p-2.5 shadow-md flex flex-col justify-between gap-2 print:bg-neutral-950 print:border-amber-900/50 print:[-webkit-print-color-adjust:exact]"
                       >
-                        {/* Fila: Foto + Título + Descripción */}
+                        {/* Fila: Foto local + Título + Descripción */}
                         <div className="flex gap-2 items-center w-full">
-                          <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-amber-500/20 shadow flex-shrink-0">
+                          <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-amber-500/20 shadow flex-shrink-0 bg-neutral-900">
                             <img
-                              src={
-                                SAMPLE_IMAGES[category.id] ||
-                                SAMPLE_IMAGES.default
-                              }
+                              src={item.image || "/images/default.jpg"}
                               alt={item.name}
                               className="w-full h-full object-cover"
                             />
