@@ -12,11 +12,46 @@
           "title": "Entradas",
           "items": [
             {
+              "id": "pan-ajo-clasico",
+              "name": "Pan al Ajo Clásico",
+              "description": "Pan molde, ajos en aceite de oliva, orégano (5 unidades)",
+              "price": 8.0,
+              "image": "/images/menu/pan-ajo.webp"
+            },
+            {
+              "id": "pan-ajo-parmesana",
+              "name": "Pan al Ajo a la Parmesana",
+              "description": "Queso parmesano, ajo en aceite de oliva, orégano (5 unidades)",
+              "price": 12.0,
+              "image": "/images/menu/pan-ajo.webp"
+            },
+            {
               "id": "pan-ajo-especial",
               "name": "Pan al Ajo Especial",
               "description": "Queso mozzarella, ajos en aceite de oliva, tocino, orégano (5 unidades)",
               "price": 15.0,
               "image": "/images/menu/pan-ajo-especial.webp"
+            },
+            {
+              "id": "pan-ajo-olivo",
+              "name": "Pan al Olivo",
+              "description": "Aceite de oliva, ajo, mozzarella, aceituna, tocino (5 unidades)",
+              "price": 15.0,
+              "image": "/images/menu/pan-ajo.webp"
+            },
+            {
+              "id": "pan-ajo-masa-casa",
+              "name": "Pan al Ajo Masa de la Casa",
+              "description": "Ajo, aceite de oliva y queso mozzarella (6 unidades)",
+              "price": 20.0,
+              "image": "/images/menu/pan-ajo.webp"
+            },
+            {
+              "id": "calzone",
+              "name": "Calzone",
+              "description": "Queso mozzarella, salame, aceituna y jamón",
+              "price": 26.0,
+              "image": "/images/menu/calzone.jpg"
             }
           ]
         },
@@ -29,6 +64,27 @@
               "description": "Salsa bolognesa casera, queso mozzarella y jamón especial",
               "price": 25.0,
               "image": "/images/menu/lasagna.jpg"
+            },
+            {
+              "id": "espaguetti-bolognesa",
+              "name": "Espaguetti a la Bolognesa",
+              "description": "Tradicional espaguetti bañado en nuestra salsa bolognesa casera con carne seleccionada",
+              "price": 23.9,
+              "image": "/images/menu/espaguetti-bolognesa.jpg"
+            },
+            {
+              "id": "espaguetti-pesto-pollo",
+              "name": "Espaguetti al Pesto con Pollo a la Parrilla",
+              "description": "Delicioso espaguetti bañado en salsa pesto artesanal acompañado de jugoso pollo a la parrilla",
+              "price": 28.9,
+              "image": "/images/menu/espaguetti-pesto.jpeg"
+            },
+            {
+              "id": "espaguetti-pesto-bisteck",
+              "name": "Espaguetti al Pesto con Bisteck",
+              "description": "Espaguetti con salsa pesto tradicional y tierno bisteck",
+              "price": 28.9,
+              "image": "/images/menu/espaguetti-bisteck.jpg"
             }
           ]
         }
@@ -39,17 +95,18 @@
       "name": "Pizzas",
       "sections": [
         {
-          "title": "Pizzas Clásicas",
+          "title": "Pizzas de la Casa",
           "items": [
             {
               "id": "la-barbi",
               "name": "LA BARBI",
               "description": "Queso M, cebolla, tomate, pimienta, champiñones, aceitunas",
-              "image": "/images/menu/la-barbi.avif",
+              "image": "/images/menu/la-barbi.jpg",
               "prices": {
                 "personal": 20.0,
                 "mediana": 32.0,
-                "familiar": 45.0
+                "familiar": 45.0,
+                "gigante": 55.0
               }
             },
             {
@@ -60,7 +117,8 @@
               "prices": {
                 "personal": 20.0,
                 "mediana": 30.0,
-                "familiar": 40.0
+                "familiar": 40.0,
+                "gigante": 50.0
               }
             },
             {
@@ -71,8 +129,300 @@
               "prices": {
                 "personal": 20.0,
                 "mediana": 30.0,
-                "familiar": 40.0
+                "familiar": 40.0,
+                "gigante": 60.0
               }
+            },
+            {
+              "id": "diabola",
+              "name": "DIABOLA",
+              "description": "Queso M, salame, orégano",
+              "image": "/images/menu/diabola.jpg",
+              "prices": {
+                "personal": 20.0,
+                "mediana": 30.0,
+                "familiar": 40.0,
+                "gigante": 55.0
+              }
+            },
+            {
+              "id": "americana-especial",
+              "name": "AMERICANA ESPECIAL",
+              "description": "Queso M, jamón ahumado, tocino",
+              "image": "/images/menu/americana-especial.jpg",
+              "prices": {
+                "personal": 23.0,
+                "mediana": 35.0,
+                "familiar": 45.0,
+                "gigante": 65.0
+              }
+            },
+            {
+              "id": "americana-burger",
+              "name": "AMERICANA BURGER",
+              "description": "Queso M, jamón ahumado, carne, orégano",
+              "image": "/images/menu/americana-burger.jpg",
+              "prices": {
+                "personal": 23.0,
+                "mediana": 35.0,
+                "familiar": 45.0,
+                "gigante": 65.0
+              }
+            },
+            {
+              "id": "mixta",
+              "name": "MIXTA",
+              "description": "Queso M, jamón, hot dog, pimiento, cebolla",
+              "image": "/images/menu/mixta.jpg",
+              "prices": {
+                "personal": 20.0,
+                "mediana": 30.0,
+                "familiar": 40.0,
+                "gigante": 55.0
+              }
+            },
+            {
+              "id": "chan-chin",
+              "name": "CHAN CHIN",
+              "description": "Queso M, carne molida, jamón, cebolla",
+              "image": "/images/menu/chan-chin.jpg",
+              "prices": {
+                "personal": 22.0,
+                "mediana": 33.0,
+                "familiar": 42.0,
+                "gigante": 55.0
+              }
+            },
+            {
+              "id": "aussie",
+              "name": "AUSSIE",
+              "description": "Queso M, jamón, tocino",
+              "image": "/images/menu/aussie.jpg",
+              "prices": {
+                "personal": 22.0,
+                "mediana": 33.0,
+                "familiar": 45.0,
+                "gigante": 55.0
+              }
+            },
+            {
+              "id": "la-fungi",
+              "name": "LA FUNGI",
+              "description": "Queso M, champiñones, aceitunas",
+              "image": "/images/menu/la-fungi.webp",
+              "prices": {
+                "personal": 23.0,
+                "mediana": 35.0,
+                "familiar": 45.0,
+                "gigante": 65.0
+              }
+            },
+            {
+              "id": "honolulu",
+              "name": "HONOLULU",
+              "description": "Queso M, jamón, piña, tocino",
+              "image": "/images/menu/honolulu.jpg",
+              "prices": {
+                "personal": 20.0,
+                "mediana": 33.0,
+                "familiar": 43.0,
+                "gigante": 60.0
+              }
+            },
+            {
+              "id": "pollo-pizza",
+              "name": "POLLO PIZZA",
+              "description": "Queso M, pollo, pimiento",
+              "image": "/images/menu/pollo-pizza.webp",
+              "prices": {
+                "personal": 22.0,
+                "mediana": 33.0,
+                "familiar": 45.0,
+                "gigante": 60.0
+              }
+            },
+            {
+              "id": "tres-quesos",
+              "name": "A LOS 3 QUESOS",
+              "description": "Queso M, Q. cheddar, Q. parmesano, tomate",
+              "image": "/images/menu/tres-quesos.jpg",
+              "prices": {
+                "personal": 25.0,
+                "mediana": 37.0,
+                "familiar": 48.0,
+                "gigante": 65.0
+              }
+            },
+            {
+              "id": "all-the-meats",
+              "name": "ALL THE MEATS",
+              "description": "Queso M, jamón, pepperoni, tocino, carne M, pimiento",
+              "image": "/images/menu/all-the-meats.jpg",
+              "prices": {
+                "personal": 25.0,
+                "mediana": 37.0,
+                "familiar": 48.0,
+                "gigante": 65.0
+              }
+            },
+            {
+              "id": "don-corleone",
+              "name": "DON CORLEONE",
+              "description": "Queso M, jamón, champiñones, jamón especial, salame",
+              "image": "/images/menu/don-corleone.webp",
+              "prices": {
+                "personal": 27.0,
+                "mediana": 39.0,
+                "familiar": 48.0,
+                "gigante": 65.0
+              }
+            },
+            {
+              "id": "super-corleone",
+              "name": "SUPER CORLEONE",
+              "description": "Queso M, jamón, champiñones, pierna ahumada, salame, pollo en trozos",
+              "image": "/images/menu/super-corleone.webp",
+              "price": 70.0
+            }
+          ]
+        },
+        {
+          "title": "Pizzas Clásicas",
+          "items": [
+            {
+              "id": "pepperoni",
+              "name": "PEPPERONI",
+              "description": "Queso M, pepperoni, orégano",
+              "image": "/images/menu/pepperoni.jpg",
+              "prices": {
+                "personal": 22.0,
+                "mediana": 32.0,
+                "familiar": 42.0,
+                "gigante": 60.0
+              }
+            },
+            {
+              "id": "hawaiana",
+              "name": "HAWAIANA",
+              "description": "Queso M, piña, durazno, jamón",
+              "image": "/images/menu/hawaiana.webp",
+              "prices": {
+                "personal": 22.0,
+                "mediana": 34.0,
+                "familiar": 42.0,
+                "gigante": 65.0
+              }
+            },
+            {
+              "id": "napolitana",
+              "name": "NAPOLITANA",
+              "description": "Queso M, albahaca, tomate",
+              "image": "/images/menu/napolitana.webp",
+              "prices": {
+                "personal": 18.0,
+                "mediana": 29.0,
+                "familiar": 39.0,
+                "gigante": 55.0
+              }
+            },
+            {
+              "id": "vegetariana",
+              "name": "VEGETARIANA",
+              "description": "Queso M, pimiento, tomate, cebolla, aceituna",
+              "image": "/images/menu/vegetariana.webp",
+              "prices": {
+                "personal": 20.0,
+                "mediana": 30.0,
+                "familiar": 40.0,
+                "gigante": 60.0
+              }
+            },
+            {
+              "id": "americana",
+              "name": "AMERICANA",
+              "description": "Queso mozzarella, jamón",
+              "image": "/images/menu/americana.jpg",
+              "prices": {
+                "personal": 20.0,
+                "mediana": 33.0,
+                "familiar": 42.0,
+                "gigante": 55.0
+              }
+            }
+          ]
+        },
+        {
+          "title": "Pizzas Especiales",
+          "items": [
+            {
+              "id": "al-lomo-saltado",
+              "name": "AL LOMO SALTADO",
+              "description": "Q. mozzarella, lomo fino, cebolla y tomate flameados en vinagres y soya",
+              "image": "/images/menu/lomo-saltado.webp",
+              "prices": { "mediana": 49.0, "familiar": 60.0 }
+            },
+            {
+              "id": "la-brava",
+              "name": "LA BRAVA",
+              "description": "Q. mozzarella, pepperoni, jamon, lomo fino, tocino, orégano",
+              "image": "/images/menu/la-brava.webp",
+              "prices": { "mediana": 48.0, "familiar": 55.0 }
+            },
+            {
+              "id": "lomo-olivo-supremo",
+              "name": "LOMO OLIVO SUPREMO",
+              "description": "Queso M, lomo fino, aceitunas",
+              "image": "/images/menu/lomo-olivo.webp",
+              "prices": { "mediana": 48.0, "familiar": 55.0 }
+            },
+            {
+              "id": "americana-premium",
+              "name": "AMERICANA PREMIUM",
+              "description": "Queso M, lomo fino, jamon especial",
+              "image": "/images/menu/americana-premium.webp",
+              "prices": { "mediana": 48.0, "familiar": 55.0 }
+            },
+            {
+              "id": "lomo-con-champiñones",
+              "name": "LOMO CON CHAMPIÑONES",
+              "description": "Queso M, lomo fino, champiñones, aceitunas, jamon",
+              "image": "/images/menu/lomo-champiñones.webp",
+              "prices": { "mediana": 48.0, "familiar": 55.0 }
+            },
+            {
+              "id": "lomo-cheesse",
+              "name": "LOMO CHEESSE",
+              "description": "Queso M, lomo fino, tomate en rodajas, queso cheddar",
+              "image": "/images/menu/lomo-cheesse.webp",
+              "prices": { "mediana": 48.0, "familiar": 55.0 }
+            },
+            {
+              "id": "pizza-amazonica",
+              "name": "PIZZA AMAZONICA",
+              "description": "Queso M, cecina, pimiento, oregano",
+              "image": "/images/menu/amazonica.webp",
+              "prices": { "mediana": 49.0, "familiar": 60.0 }
+            },
+            {
+              "id": "hawaian-chiken",
+              "name": "HAWAIAN CHIKEN",
+              "description": "Queso mozzarella, trozos de pollo, jamón, piña, tocino",
+              "image": "/images/menu/hawaian-chiken.webp",
+              "prices": { "mediana": 49.0, "familiar": 60.0 }
+            },
+            {
+              "id": "la-champinosi",
+              "name": "LA CHAMPIÑOSI",
+              "description": "Queso mozzarella, tocino, champiñones, pierna ahumada, aceitunas, orégano",
+              "image": "/images/menu/champinosi.webp",
+              "prices": { "mediana": 45.0, "familiar": 55.0 }
+            },
+            {
+              "id": "pollo-tropical",
+              "name": "POLLO TROPICAL",
+              "description": "Queso M, trozos de pollo, durazno, oregano",
+              "image": "/images/menu/pollo-tropical.webp",
+              "prices": { "mediana": 45.0, "familiar": 55.0 }
             }
           ]
         }
@@ -88,9 +438,171 @@
             {
               "id": "salchipapa-clasica",
               "name": "Clásica",
-              "description": "Salchicha premium con papas crocantes y cremas de la casa",
+              "description": "Salchicha con papas y cremas",
               "price": 15.0,
               "image": "/images/menu/salchipapa-clasica.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bebidas-infusiones",
+      "name": "Bebidas e Infusiones",
+      "sections": [
+        {
+          "title": "Bebidas",
+          "items": [
+            { "id": "agua-mineral", "name": "Agua Mineral", "price": 3.0 },
+            {
+              "id": "gaseosa-personal",
+              "name": "Gaseosa Personal (Coca Cola, Inca Kola, Fanta)",
+              "price": 4.0
+            },
+            {
+              "id": "gaseosa-medio-litro",
+              "name": "Gaseosa 1/2 Litro",
+              "price": 6.0
+            },
+            {
+              "id": "inca-kola-gordita",
+              "name": "Inca Kola (Gordita)",
+              "price": 6.0
+            },
+            { "id": "gaseosa-1lt", "name": "Gaseosa 1 Lt.", "price": 9.0 },
+            {
+              "id": "gaseosa-pepsi-1lt",
+              "name": "Gaseosa Pepsi 1 Lt.",
+              "price": 6.0
+            },
+            {
+              "id": "gaseosa-1-5lt",
+              "name": "Gaseosa 2 1/2 Lt.",
+              "price": 16.0
+            },
+            {
+              "id": "chicha-morada",
+              "name": "Chicha Morada (Jarra)",
+              "price": 18.0
+            },
+            { "id": "maracuya", "name": "Maracuyá (Jarra)", "price": 18.0 },
+            { "id": "limonada", "name": "Limonada (Jarra)", "price": 18.0 }
+          ]
+        },
+        {
+          "title": "Infusiones",
+          "items": [
+            {
+              "id": "te",
+              "name": "Té (Canela y clavo, anís, manzanilla y hierba luisa)",
+              "price": 4.0
+            },
+            { "id": "nescafe", "name": "Nescafé", "price": 5.0 },
+            { "id": "cafe-con-leche", "name": "Café c/ Leche", "price": 8.0 },
+            { "id": "frutos-rojos", "name": "Frutos Rojos", "price": 6.0 },
+            { "id": "jamaica", "name": "Jamaica", "price": 6.0 },
+            {
+              "id": "chocolate-caliente",
+              "name": "Chocolate Caliente",
+              "price": 10.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aperitivos",
+      "name": "Aperitivos y Vinos",
+      "sections": [
+        {
+          "title": "Aperitivos",
+          "items": [
+            {
+              "id": "mojito-maracuya",
+              "name": "Mojito de Maracuyá",
+              "price": 15.0
+            },
+            { "id": "mojito-clasico", "name": "Mojito Clásico", "price": 15.0 },
+            { "id": "mojito-mango", "name": "Mojito de Mango", "price": 15.0 },
+            { "id": "pisco-sour", "name": "Pisco Sour", "price": 15.0 }
+          ]
+        },
+        {
+          "title": "Vinos",
+          "items": [
+            {
+              "id": "vino-semi-seco",
+              "name": "Vino Semi Seco",
+              "prices": { "1/2 jarra": 13.0, "jarra": 25.0 }
+            },
+            {
+              "id": "vino-seco",
+              "name": "Vino Seco",
+              "prices": { "1/2 jarra": 13.0, "jarra": 25.0 }
+            },
+            {
+              "id": "sangria",
+              "name": "Sangría",
+              "prices": { "1/2 jarra": 18.0, "jarra": 30.0 }
+            },
+            {
+              "id": "copa-vino",
+              "name": "Copa de Vino",
+              "prices": { "copa": 10.0 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jugos",
+      "name": "Jugos",
+      "sections": [
+        {
+          "title": "Jugos Naturales",
+          "items": [
+            { "id": "jugo-papaya", "name": "Jugo de Papaya", "price": 10.0 },
+            {
+              "id": "jugo-mango-leche",
+              "name": "Mango con Leche",
+              "price": 13.0
+            },
+            {
+              "id": "jugo-mango-maracuya",
+              "name": "Mango con Maracuyá",
+              "price": 13.0
+            },
+            {
+              "id": "jugo-fresa-leche",
+              "name": "Fresa con Leche",
+              "price": 12.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "adicionales",
+      "name": "Adicionales",
+      "sections": [
+        {
+          "title": "Adicionales",
+          "items": [
+            { "id": "adic-chorizo", "name": "Chorizo", "price": 5.0 },
+            { "id": "adic-queso", "name": "Queso Mozzarella", "price": 10.0 },
+            { "id": "adic-parmesano", "name": "Parmesano", "price": 10.0 },
+            { "id": "adic-jamon", "name": "Jamón", "price": 4.0 },
+            { "id": "adic-champiñones", "name": "Champiñones", "price": 6.0 },
+            { "id": "adic-pina", "name": "Piña", "price": 5.0 },
+            { "id": "adic-pollo", "name": "Pollo", "price": 10.0 },
+            { "id": "adic-tocino", "name": "Tocino", "price": 6.0 },
+            { "id": "adic-pepperoni", "name": "Pepperoni", "price": 5.0 },
+            { "id": "adic-carne", "name": "Carne", "price": 10.0 },
+            { "id": "adic-aceitunas", "name": "Aceitunas", "price": 4.0 },
+            {
+              "id": "adic-otros",
+              "name": "Otros (albahaca, pimiento, cebolla)",
+              "price": 2.0
             }
           ]
         }

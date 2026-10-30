@@ -5,9 +5,11 @@ import menuData from "./data/menuData.json";
 import Image from "next/image";
 
 interface PizzaPrices {
-  personal: number;
-  mediana: number;
-  familiar: number;
+  personal?: number;
+  mediana?: number;
+  familiar?: number;
+  gigante?: number;
+  [key: string]: number | undefined;
 }
 
 interface MenuItem {
@@ -15,7 +17,7 @@ interface MenuItem {
   name: string;
   description: string;
   image?: string;
-  price?: number;
+  price?: number | null;
   prices?: PizzaPrices;
 }
 
@@ -112,39 +114,39 @@ export default function MenuPage() {
 
                     <div className="flex-1 space-y-1.5 pl-2 border-l border-neutral-800/80 w-full">
                       {item.prices ? (
-                        <>
-                          <div className="flex justify-between items-center text-xs w-full bg-neutral-950/60 px-2 py-1 rounded-lg border border-neutral-800">
-                            <span className="text-neutral-400 font-semibold">
-                              Personal
-                            </span>
-                            <span className="font-black text-amber-400 text-xs">
-                              S/{item.prices.personal.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center text-xs w-full bg-neutral-950/60 px-2 py-1 rounded-lg border border-neutral-800">
-                            <span className="text-neutral-400 font-semibold">
-                              Mediana
-                            </span>
-                            <span className="font-black text-amber-400 text-xs">
-                              S/{item.prices.mediana.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center text-xs w-full bg-neutral-950/60 px-2 py-1 rounded-lg border border-neutral-800">
-                            <span className="text-neutral-400 font-semibold">
-                              Familiar
-                            </span>
-                            <span className="font-black text-amber-400 text-xs">
-                              S/{item.prices.familiar.toFixed(2)}
-                            </span>
-                          </div>
-                        </>
+                        <div className="space-y-1 w-full">
+                          {Object.entries(item.prices).map(([size, val]) => {
+                            if (val === undefined) return null;
+                            const formattedSize =
+                              size.charAt(0).toUpperCase() + size.slice(1);
+                            return (
+                              <div
+                                key={size}
+                                className="flex justify-between items-center text-xs w-full bg-neutral-950/60 px-2 py-1 rounded-lg border border-neutral-800"
+                              >
+                                <span className="text-neutral-400 font-semibold capitalize">
+                                  {formattedSize}
+                                </span>
+                                <span className="font-black text-amber-400 text-xs">
+                                  S/{val.toFixed(2)}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
                       ) : (
                         <div className="flex justify-between items-center px-3 py-2 bg-gradient-to-r from-red-950/60 to-neutral-900 rounded-xl border border-red-900/40 w-full">
                           <span className="text-neutral-300 text-xs font-bold uppercase tracking-wider">
                             Precio
                           </span>
                           <span className="font-black text-amber-400 text-base">
-                            S/{item.price?.toFixed(2)}
+                            {item.price !== null && item.price !== undefined ? (
+                              `S/${item.price.toFixed(2)}`
+                            ) : (
+                              <span className="text-xs text-amber-300 italic uppercase">
+                                Próximamente
+                              </span>
+                            )}
                           </span>
                         </div>
                       )}
