@@ -16,14 +16,14 @@
               "name": "Pan al Ajo Clásico",
               "description": "Pan molde, ajos en aceite de oliva, orégano (5 unidades)",
               "price": 8.0,
-              "image": "/images/menu/pan-ajo.webp"
+              "image": "/images/menu/pan-ajo.jpg"
             },
             {
               "id": "pan-ajo-parmesana",
               "name": "Pan al Ajo a la Parmesana",
               "description": "Queso parmesano, ajo en aceite de oliva, orégano (5 unidades)",
               "price": 12.0,
-              "image": "/images/menu/pan-ajo.webp"
+              "image": "/images/menu/pan-ajo-parmesana.webp"
             },
             {
               "id": "pan-ajo-especial",
@@ -37,14 +37,14 @@
               "name": "Pan al Olivo",
               "description": "Aceite de oliva, ajo, mozzarella, aceituna, tocino (5 unidades)",
               "price": 15.0,
-              "image": "/images/menu/pan-ajo.webp"
+              "image": "/images/menu/pan-ajo-olivo.webp"
             },
             {
               "id": "pan-ajo-masa-casa",
               "name": "Pan al Ajo Masa de la Casa",
               "description": "Ajo, aceite de oliva y queso mozzarella (6 unidades)",
               "price": 20.0,
-              "image": "/images/menu/pan-ajo.webp"
+              "image": "/images/menu/pan-ajo-masa-casa.webp"
             },
             {
               "id": "calzone",
@@ -63,28 +63,7 @@
               "name": "Lasagna Bolognesa",
               "description": "Salsa bolognesa casera, queso mozzarella y jamón especial",
               "price": 25.0,
-              "image": "/images/menu/lasagna.jpg"
-            },
-            {
-              "id": "espaguetti-bolognesa",
-              "name": "Espaguetti a la Bolognesa",
-              "description": "Tradicional espaguetti bañado en nuestra salsa bolognesa casera con carne seleccionada",
-              "price": 23.9,
-              "image": "/images/menu/espaguetti-bolognesa.jpg"
-            },
-            {
-              "id": "espaguetti-pesto-pollo",
-              "name": "Espaguetti al Pesto con Pollo a la Parrilla",
-              "description": "Delicioso espaguetti bañado en salsa pesto artesanal acompañado de jugoso pollo a la parrilla",
-              "price": 28.9,
-              "image": "/images/menu/espaguetti-pesto.jpeg"
-            },
-            {
-              "id": "espaguetti-pesto-bisteck",
-              "name": "Espaguetti al Pesto con Bisteck",
-              "description": "Espaguetti con salsa pesto tradicional y tierno bisteck",
-              "price": 28.9,
-              "image": "/images/menu/espaguetti-bisteck.jpg"
+              "image": "/images/menu/lasagna.jpeg"
             }
           ]
         }
@@ -245,7 +224,7 @@
               "id": "tres-quesos",
               "name": "A LOS 3 QUESOS",
               "description": "Queso M, Q. cheddar, Q. parmesano, tomate",
-              "image": "/images/menu/tres-quesos.jpg",
+              "image": "/images/menu/tres-quesos.webp",
               "prices": {
                 "personal": 25.0,
                 "mediana": 37.0,
@@ -429,24 +408,6 @@
       ]
     },
     {
-      "id": "salchipapas",
-      "name": "Salchipapas",
-      "sections": [
-        {
-          "title": "Salchipapas",
-          "items": [
-            {
-              "id": "salchipapa-clasica",
-              "name": "Clásica",
-              "description": "Salchicha con papas y cremas",
-              "price": 15.0,
-              "image": "/images/menu/salchipapa-clasica.jpg"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "bebidas-infusiones",
       "name": "Bebidas e Infusiones",
       "sections": [
@@ -520,11 +481,27 @@
             {
               "id": "mojito-maracuya",
               "name": "Mojito de Maracuyá",
+              "image": "/images/menu/mojito-maracuya.webp",
               "price": 15.0
             },
-            { "id": "mojito-clasico", "name": "Mojito Clásico", "price": 15.0 },
-            { "id": "mojito-mango", "name": "Mojito de Mango", "price": 15.0 },
-            { "id": "pisco-sour", "name": "Pisco Sour", "price": 15.0 }
+            {
+              "id": "mojito-clasico",
+              "name": "Mojito Clásico",
+              "image": "/images/menu/mojito.webp",
+              "price": 15.0
+            },
+            {
+              "id": "mojito-mango",
+              "name": "Mojito de Mango",
+              "image": "/images/menu/mojito-mango.webp",
+              "price": 15.0
+            },
+            {
+              "id": "pisco-sour",
+              "name": "Pisco Sour",
+              "image": "/images/menu/pisco-sour.jpg",
+              "price": 15.0
+            }
           ]
         },
         {
@@ -533,21 +510,25 @@
             {
               "id": "vino-semi-seco",
               "name": "Vino Semi Seco",
+              "image": "/images/menu/vino-semi-seco.webp",
               "prices": { "1/2 jarra": 13.0, "jarra": 25.0 }
             },
             {
               "id": "vino-seco",
               "name": "Vino Seco",
+              "image": "/images/menu/vino-seco.webp",
               "prices": { "1/2 jarra": 13.0, "jarra": 25.0 }
             },
             {
               "id": "sangria",
               "name": "Sangría",
+              "image": "/images/menu/sangria.jpg",
               "prices": { "1/2 jarra": 18.0, "jarra": 30.0 }
             },
             {
               "id": "copa-vino",
               "name": "Copa de Vino",
+              "image": "/images/menu/copa-vino.jpg",
               "prices": { "copa": 10.0 }
             }
           ]
@@ -561,20 +542,28 @@
         {
           "title": "Jugos Naturales",
           "items": [
-            { "id": "jugo-papaya", "name": "Jugo de Papaya", "price": 10.0 },
+            {
+              "id": "jugo-papaya",
+              "name": "Jugo de Papaya",
+              "image": "/images/menu/jugo-papaya.webp",
+              "price": 10.0
+            },
             {
               "id": "jugo-mango-leche",
               "name": "Mango con Leche",
+              "image": "/images/menu/jugo-mango-leche.webp",
               "price": 13.0
             },
             {
               "id": "jugo-mango-maracuya",
               "name": "Mango con Maracuyá",
+              "image": "/images/menu/jugo-mango-maracuya.jpg",
               "price": 13.0
             },
             {
               "id": "jugo-fresa-leche",
               "name": "Fresa con Leche",
+              "image": "/images/menu/jugo-fresa-leche.webp",
               "price": 12.0
             }
           ]

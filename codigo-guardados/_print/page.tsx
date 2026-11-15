@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import menuData from "../data/menuData.json";
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import menuData from "../../app/data/menuData.json";
 import Image from "next/image";
 
 interface PizzaPrices {
@@ -29,8 +36,15 @@ type MergedSection = {
 type MenuElement =
   | { type: "section-title"; data: string }
   | { type: "item"; data: MenuItem; hideImage: boolean }
-  | { type: "dish-row"; data: MenuItem[]; section: string }
-  | { type: "section-block"; data: { title: string; items: MenuItem[] } }
+  | { type: "photo-item"; data: MenuItem }
+  | {
+      type: "section-block";
+      data: {
+        title: string;
+        items: MenuItem[];
+        banner?: { src: string; alt: string; objectPosition?: string };
+      };
+    }
   | { type: "merged-section"; data: MergedSection };
 
 // Secciones que se imprimen sin foto, como una lista (nombre + precio).
@@ -71,13 +85,6 @@ const PHOTO_TOP_SECTIONS = new Set([
   "Pizzas de la Casa",
   "Pizzas Clásicas",
   "Pizzas Especiales",
-  "Salchipapas",
-]);
-
-const NO_DESCRIPTION_ITEMS = new Set([
-  "lasagna-bolognesa",
-  "espaguetti-pesto-pollo",
-  "espaguetti-pesto-bisteck",
 ]);
 
 const SECTION_ITEM_ORDER: Record<string, string[]> = {
@@ -95,16 +102,10 @@ const SECTION_ITEM_ORDER: Record<string, string[]> = {
   ],
 };
 
-const COLUMN_AVAILABLE_HEIGHT = 680;
+const COLUMN_AVAILABLE_HEIGHT = 985;
 const COLUMN_GAP = 2;
-
-const SECTION_GAP_IMAGE: Record<string, FillerKind> = {
-  Pastas: "stamp",
-  "Pizzas Clásicas": "logo",
-  Salchipapas: "logo",
-};
-
-type FillerKind = "logo" | "stamp";
+const MAX_PAGES = 6;
+const COLUMNS_PER_PAGE = 2;
 
 type PackedItem = { el: MenuElement; height: number };
 type ColumnLayout = {
@@ -160,9 +161,32 @@ function packMeasured(
 
 function buildPageLayouts(columns: ColumnLayout[]): PageLayout[] {
   const pages: PageLayout[] = [];
-  for (let i = 0; i < columns.length; i += 3) {
-    pages.push(columns.slice(i, i + 3));
+  for (let i = 0; i < columns.length; i += COLUMNS_PER_PAGE) {
+    pages.push(columns.slice(i, i + COLUMNS_PER_PAGE));
   }
+  return pages;
+}
+
+function packWithinPageLimit(
+  elements: MenuElement[],
+  heights: number[],
+): PageLayout[] {
+  let maxHeight = COLUMN_AVAILABLE_HEIGHT;
+  let pages = buildPageLayouts(packMeasured(elements, heights, maxHeight));
+
+  const absoluteMaxHeight = COLUMN_AVAILABLE_HEIGHT * 1.6;
+  let guard = 0;
+
+  while (
+    pages.length > MAX_PAGES &&
+    maxHeight < absoluteMaxHeight &&
+    guard < 40
+  ) {
+    maxHeight = Math.min(absoluteMaxHeight, maxHeight + 60);
+    pages = buildPageLayouts(packMeasured(elements, heights, maxHeight));
+    guard += 1;
+  }
+
   return pages;
 }
 
@@ -242,16 +266,36 @@ export default function PrintMenuPage() {
           return;
         }
 
+        if (sec.title === "Jugos Naturales") {
+          elements.push({
+            type: "section-block",
+            data: {
+              title: sec.title,
+              items,
+              banner: {
+                src: "/jugos-decoracion-carta.webp",
+                alt: "Jugos naturales Don Corleone",
+                objectPosition: "center 50%",
+              },
+            },
+          });
+          return;
+        }
+
+        if (sec.title === "Adicionales") {
+          elements.push({
+            type: "section-block",
+            data: { title: sec.title, items },
+          });
+          return;
+        }
+
         elements.push({ type: "section-title", data: sec.title });
 
         if (PHOTO_TOP_SECTIONS.has(sec.title)) {
-          for (let i = 0; i < items.length; i += 2) {
-            elements.push({
-              type: "dish-row",
-              data: items.slice(i, i + 2),
-              section: sec.title,
-            });
-          }
+          items.forEach((item) => {
+            elements.push({ type: "photo-item", data: item });
+          });
           return;
         }
 
@@ -280,11 +324,7 @@ export default function PrintMenuPage() {
       );
     });
 
-    setPages(
-      buildPageLayouts(
-        packMeasured(allElements, heights, COLUMN_AVAILABLE_HEIGHT),
-      ),
-    );
+    setPages(packWithinPageLimit(allElements, heights));
   }, [allElements, pages]);
 
   useEffect(() => {
@@ -303,7 +343,7 @@ export default function PrintMenuPage() {
     <>
       <style>{`
         @page {
-          size: A4 landscape;
+          size: A4 portrait;
           margin: 0;
         }
         @media print {
@@ -323,9 +363,9 @@ export default function PrintMenuPage() {
           }
         }
         .a4-sheet {
-          width: 297mm;
-          height: 210mm;
-          max-height: 210mm;
+          width: 210mm;
+          height: 297mm;
+          max-height: 297mm;
           box-sizing: border-box;
           overflow: hidden;
           background-color: #0a0a0a;
@@ -344,7 +384,7 @@ export default function PrintMenuPage() {
             position: "absolute",
             left: "-10000px",
             top: 0,
-            width: "calc((297mm - 64px) / 3)",
+            width: "calc((210mm - 64px) / 2)",
           }}
         >
           {allElements.map((el, index) => (
@@ -377,21 +417,21 @@ export default function PrintMenuPage() {
                       width={120}
                       height={32}
                       priority
-                      className="h-7 w-auto drop-shadow-[0_2px_8px_rgba(255,107,0,0.3)]"
+                      className="h-8 w-auto drop-shadow-[0_2px_8px_rgba(255,107,0,0.3)]"
                     />
-                    <span className="text-[11px] text-amber-400 font-bold tracking-widest uppercase border-l border-neutral-700 pl-3">
+                    <span className="text-[12px] text-amber-400 font-bold tracking-widest uppercase border-l border-neutral-700 pl-3">
                       Carta Oficial • Edición Impresa (Pág. {pageIndex + 1} de{" "}
                       {pages.length})
                     </span>
                   </div>
-                  <p className="text-[10px] text-neutral-400 font-semibold uppercase">
+                  <p className="text-[11px] text-neutral-400 font-semibold uppercase">
                     Pizzas Artesanales • Tacna
                   </p>
                 </header>
 
-                {/* Grilla Estricta de 3 Columnas */}
-                <div className="grid grid-cols-3 gap-3 w-full flex-1 items-start overflow-hidden px-1">
-                  {[0, 1, 2].map((colIndex) => {
+                {/* Grilla Estricta de 2 Columnas (A4 Vertical) */}
+                <div className="grid grid-cols-2 gap-3 w-full flex-1 items-start overflow-hidden px-1">
+                  {[0, 1].map((colIndex) => {
                     const column = pageColumns[colIndex];
 
                     if (!column) {
@@ -407,18 +447,20 @@ export default function PrintMenuPage() {
                           renderMenuElement(item.el, idx),
                         )}
                         {/* Imagen decorativa final sin borde naranja y con desvanecimiento limpio */}
-                        {isLastPage && colIndex === 2 && (
-                          <div className="mt-1 relative w-full flex-1 rounded-md overflow-hidden bg-[#0a0a0a] flex">
+                        {isLastPage && colIndex === 1 && (
+                          <div className="mt-1 relative w-full flex-1 min-h-[140px] rounded-md overflow-hidden bg-[#0a0a0a] flex">
                             <img
                               src="/decoracion-platos-carta.webp"
                               alt="Don Corleone Decoración"
                               className="w-full h-full object-cover"
                               style={{
                                 objectPosition: "center 40%",
+                                filter:
+                                  "contrast(1.05) saturate(1.08) brightness(1.04)",
                                 maskImage:
-                                  "radial-gradient(circle at center, black 50%, transparent 88%)",
+                                  "radial-gradient(circle at center, black 52%, transparent 90%)",
                                 WebkitMaskImage:
-                                  "radial-gradient(circle at center, black 50%, transparent 88%)",
+                                  "radial-gradient(circle at center, black 52%, transparent 90%)",
                               }}
                             />
                           </div>
@@ -429,7 +471,7 @@ export default function PrintMenuPage() {
                 </div>
 
                 {/* Pie de Página Fijo por Hoja */}
-                <footer className="py-2.5 text-center text-[9px] font-semibold text-neutral-100 bg-neutral-900 border-t border-amber-800/50 flex-shrink-0 mt-1">
+                <footer className="py-2.5 text-center text-[10px] font-semibold text-neutral-100 bg-neutral-900 border-t border-amber-800/50 flex-shrink-0 mt-1">
                   <p>
                     Don Corleone Tacna • Siente la Diferencia • Carta de
                     Especialidades
@@ -451,8 +493,8 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
         key={`sec-${index}`}
         className="flex items-center gap-2 bg-red-900 px-2 py-0.5 rounded-md border-l-4 border-amber-400 border-y border-r border-red-700/60 shadow my-0.5"
       >
-        <span className="text-[9px]">🍕</span>
-        <h2 className="text-[8.5px] font-black tracking-widest text-white uppercase truncate">
+        <span className="text-[12px]">🍕</span>
+        <h2 className="text-[12px] font-black tracking-widest text-white uppercase truncate">
           {el.data}
         </h2>
       </div>
@@ -467,15 +509,15 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
       return (
         <div key={`block-${index}`} className="w-full flex flex-col">
           <div className="flex items-center gap-2 bg-red-900 px-2 py-0.5 rounded-md border-l-4 border-amber-400 border-y border-r border-red-700/60 shadow my-0.5">
-            <span className="text-[9px]">🍕</span>
-            <h2 className="text-[8.5px] font-black tracking-widest text-white uppercase truncate">
+            <span className="text-[12px]">🍕</span>
+            <h2 className="text-[12px] font-black tracking-widest text-white uppercase truncate">
               {el.data.title}
             </h2>
           </div>
 
           <div className="w-full bg-neutral-900/90 backdrop-blur-sm border border-amber-700/40 rounded-md px-1.5 py-1 shadow">
             <div className="flex gap-2 items-stretch">
-              <div className="relative w-28 h-32 rounded overflow-hidden border border-amber-500/30 shadow-sm flex-shrink-0 bg-neutral-950">
+              <div className="relative w-32 h-40 rounded overflow-hidden border border-amber-500/30 shadow-sm flex-shrink-0 bg-neutral-950">
                 <img
                   src="/images/menu/pan-ajo-especial.webp"
                   alt="Pan al Ajo"
@@ -489,10 +531,10 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
                     key={item.id}
                     className="flex justify-between items-center gap-1"
                   >
-                    <span className="text-[8.5px] font-semibold text-white leading-tight">
+                    <span className="text-[11px] font-semibold text-white leading-tight">
                       {item.name}
                     </span>
-                    <span className="text-[9px] font-black text-amber-400 whitespace-nowrap">
+                    <span className="text-[11px] font-black text-amber-400 whitespace-nowrap">
                       S/{item.price?.toFixed(2)}
                     </span>
                   </div>
@@ -502,7 +544,7 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
 
             {calzone && (
               <div className="mt-1.5 pt-1.5 border-t border-amber-700/40 flex gap-2 items-center">
-                <div className="relative w-12 h-12 rounded overflow-hidden border border-amber-500/30 shadow-sm flex-shrink-0 bg-neutral-950">
+                <div className="relative w-28 h-28 rounded overflow-hidden border border-amber-500/30 shadow-sm flex-shrink-0 bg-neutral-950">
                   <img
                     src={calzone.image || "/images/menu/al-tono.jpg"}
                     alt="Calzone"
@@ -515,14 +557,14 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-baseline gap-1">
-                    <span className="text-[9px] font-black text-white tracking-wide">
+                    <span className="text-[11px] font-black text-white tracking-wide">
                       {calzone.name}
                     </span>
-                    <span className="text-[9px] font-black text-amber-400 whitespace-nowrap">
+                    <span className="text-[11px] font-black text-amber-400 whitespace-nowrap">
                       S/{calzone.price?.toFixed(2)}
                     </span>
                   </div>
-                  <p className="text-[7.5px] text-neutral-300 leading-tight">
+                  <p className="text-[10px] text-neutral-300 leading-tight">
                     {calzone.description}
                   </p>
                 </div>
@@ -536,8 +578,8 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
     return (
       <div key={`block-${index}`} className="w-full flex flex-col">
         <div className="flex items-center gap-2 bg-red-900 px-2 py-0.5 rounded-md border-l-4 border-amber-400 border-y border-r border-red-700/60 shadow my-0.5">
-          <span className="text-[9px]">🍕</span>
-          <h2 className="text-[8.5px] font-black tracking-widest text-white uppercase truncate">
+          <span className="text-[12px]">🍕</span>
+          <h2 className="text-[12px] font-black tracking-widest text-white uppercase truncate">
             {el.data.title}
           </h2>
         </div>
@@ -550,6 +592,13 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
             ),
           )}
         </div>
+        {el.data.banner && (
+          <SectionBanner
+            src={el.data.banner.src}
+            alt={el.data.banner.alt}
+            objectPosition={el.data.banner.objectPosition}
+          />
+        )}
       </div>
     );
   }
@@ -558,15 +607,15 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
     return (
       <div key={`merged-${index}`} className="w-full flex flex-col">
         <div className="flex items-center gap-2 bg-red-900 px-2 py-0.5 rounded-md border-l-4 border-amber-400 border-y border-r border-red-700/60 shadow my-0.5">
-          <span className="text-[9px]">🍕</span>
-          <h2 className="text-[8.5px] font-black tracking-widest text-white uppercase truncate">
+          <span className="text-[12px]">🍕</span>
+          <h2 className="text-[12px] font-black tracking-widest text-white uppercase truncate">
             {el.data.title}
           </h2>
         </div>
-        <div className="relative grid grid-cols-2 gap-2">
+        <div className="relative grid grid-cols-2 items-start gap-2">
           {el.data.groups.map((group) => (
             <div key={group.subtitle} className="flex flex-col min-w-0">
-              <h3 className="text-[8px] font-black tracking-wider text-amber-300 uppercase border-b border-neutral-700 pb-1 mb-1">
+              <h3 className="text-[10.5px] font-black tracking-wider text-amber-300 uppercase border-b border-neutral-700 pb-1 mb-1">
                 {group.subtitle}
               </h3>
               <div className="flex flex-col">
@@ -578,60 +627,66 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
                   ),
                 )}
               </div>
+              {el.data.title === "Aperitivos y Vinos" &&
+                group.subtitle === "Aperitivos" && (
+                  <div className="relative w-full h-[180px] mt-2 rounded-md overflow-hidden bg-[#0a0a0a]">
+                    <img
+                      src="/images/menu/mojito.webp"
+                      alt="Mojito Don Corleone"
+                      className="w-full h-full object-contain"
+                      style={{
+                        filter: "contrast(1.06) saturate(1.1) brightness(1.05)",
+                        maskImage:
+                          "radial-gradient(ellipse at center, black 60%, transparent 95%)",
+                        WebkitMaskImage:
+                          "radial-gradient(ellipse at center, black 60%, transparent 95%)",
+                      }}
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src =
+                          "/decoracion-platos-carta.webp";
+                      }}
+                    />
+                  </div>
+                )}
             </div>
           ))}
-          {el.data.title === "Aperitivos y Vinos" && (
-            <div className="pointer-events-none absolute bottom-0 left-0 w-1/2 flex items-end justify-center">
-              <img
-                src="/sello-don-corleone-transparente.svg"
-                alt="Sello Don Corleone"
-                className="w-[90%] max-h-[120px] object-contain opacity-85 -rotate-12"
-              />
-            </div>
-          )}
         </div>
+
+        {el.data.title === "Bebidas e Infusiones" && (
+          <SectionBanner
+            src="/sello-don-corleone-transparente.svg"
+            alt="Bebidas e infusiones Don Corleone"
+            objectPosition="center 50%"
+            fallback="/logo.svg"
+            heightClass="h-[150px]"
+            contain
+          />
+        )}
       </div>
     );
   }
 
-  if (el.type === "dish-row") {
-    const gapKind =
-      el.data.length % 2 === 1 ? SECTION_GAP_IMAGE[el.section] : undefined;
-    return (
-      <div key={`row-${index}`} className="grid grid-cols-2 gap-2 w-full">
-        {el.data.map((item) => renderPhotoCard(item, el.section))}
-        {gapKind && (
-          <div className="relative w-full h-full min-h-0 overflow-hidden flex items-center justify-center p-2">
-            <img
-              src={
-                gapKind === "logo"
-                  ? "/logo.svg"
-                  : "/sello-don-corleone-transparente.svg"
-              }
-              alt={
-                gapKind === "logo" ? "Logo Don Corleone" : "Sello Don Corleone"
-              }
-              className="max-h-full max-w-full object-contain opacity-90"
-            />
-          </div>
-        )}
-      </div>
-    );
+  if (el.type === "photo-item") {
+    return renderPhotoCard(el.data);
   }
 
   const item = el.data as MenuItem;
   return (
     <div
       key={item.id}
-      className="w-full bg-neutral-900/90 backdrop-blur-sm border border-amber-700/40 rounded-md px-1 py-0.5 shadow flex flex-col justify-between gap-0.5"
+      className="w-full bg-neutral-900/90 backdrop-blur-sm border border-amber-700/40 rounded-md px-1.5 py-1 shadow flex flex-col justify-between gap-0.5"
     >
       <div className="flex gap-1.5 items-center w-full">
         {!el.hideImage && (
-          <div className="relative w-7 h-7 rounded overflow-hidden border border-amber-500/30 shadow-sm flex-shrink-0 bg-neutral-950">
+          <div className="relative w-9 h-9 rounded overflow-hidden border border-amber-500/30 shadow-sm flex-shrink-0 bg-neutral-950">
             <img
               src={item.image || "/images/menu/al-tono.jpg"}
               alt={item.name}
               className="w-full h-full object-cover"
+              style={{
+                filter: "contrast(1.06) saturate(1.12) brightness(1.05)",
+              }}
               onError={(event) => {
                 event.currentTarget.onerror = null;
                 event.currentTarget.src = "/images/menu/al-tono.jpg";
@@ -643,25 +698,25 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start gap-1">
             <h3
-              className={`text-[9.5px] font-black text-white tracking-wide ${
+              className={`text-[11px] font-black text-white tracking-wide ${
                 wrapName ? "leading-tight" : "truncate"
               }`}
             >
               {item.name}
             </h3>
             {item.price !== undefined && item.price !== null && (
-              <span className="font-black text-amber-400 text-[9.5px] whitespace-nowrap">
+              <span className="font-black text-amber-400 text-[11px] whitespace-nowrap">
                 S/{item.price.toFixed(2)}
               </span>
             )}
             {item.price === null && (
-              <span className="font-semibold text-amber-300 text-[7px] uppercase italic whitespace-nowrap">
+              <span className="font-semibold text-amber-300 text-[10px] uppercase italic whitespace-nowrap">
                 Próximamente
               </span>
             )}
           </div>
           {item.description && (
-            <p className="text-[8.5px] text-neutral-300 line-clamp-2 leading-tight">
+            <p className="text-[10px] text-neutral-300 line-clamp-2 leading-tight">
               {item.description}
             </p>
           )}
@@ -682,10 +737,12 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
                     : "justify-between items-center"
                 }`}
               >
-                <span className="text-[7px] text-neutral-300 font-semibold leading-tight">
-                  {label}
-                </span>
-                <span className="font-black text-amber-400 text-[9px] whitespace-nowrap">
+                {size !== "copa" && (
+                  <span className="text-[10px] text-neutral-300 font-semibold leading-tight">
+                    {label}
+                  </span>
+                )}
+                <span className="font-black text-amber-400 text-[11px] whitespace-nowrap">
                   S/{val.toFixed(2)}
                 </span>
               </div>
@@ -697,10 +754,7 @@ function renderMenuElement(el: MenuElement, index: number, wrapName = false) {
   );
 }
 
-function renderPhotoCard(item: MenuItem, sectionTitle?: string) {
-  const isPastas = sectionTitle === "Pastas";
-  const hideDescription =
-    isPastas || !item.description || NO_DESCRIPTION_ITEMS.has(item.id);
+function renderPhotoCard(item: MenuItem) {
   const priceEntries = item.prices
     ? Object.entries(item.prices).filter(([, val]) => val !== undefined)
     : [];
@@ -710,74 +764,120 @@ function renderPhotoCard(item: MenuItem, sectionTitle?: string) {
       key={item.id}
       className="w-full flex flex-col overflow-hidden rounded-md border border-amber-700/40 bg-neutral-900/90 shadow"
     >
-      <div
-        className={`relative w-full ${
-          isPastas ? "h-16" : "h-22"
-        } bg-neutral-950 flex-shrink-0`}
-      >
-        <img
-          src={item.image || "/images/menu/al-tono.jpg"}
-          alt={item.name}
-          className="w-full h-full object-cover"
-          onError={(event) => {
-            event.currentTarget.onerror = null;
-            event.currentTarget.src = "/images/menu/al-tono.jpg";
-          }}
-        />
-
-        {priceEntries.length > 0 && (
-          <div
-            className={`absolute bottom-0 left-0 right-0 grid ${
-              priceEntries.length >= 4
-                ? "grid-cols-4"
-                : priceEntries.length === 3
-                  ? "grid-cols-3"
-                  : priceEntries.length === 2
-                    ? "grid-cols-2"
-                    : "grid-cols-1"
-            } bg-black/85 backdrop-blur-sm`}
-          >
-            {priceEntries.map(([size, val]) => (
-              <div
-                key={size}
-                className="flex flex-col items-center px-0.5 py-0.5 border-r border-white/10 last:border-r-0"
-              >
-                <span className="text-[7px] text-neutral-300 font-semibold leading-none">
-                  {SIZE_LABELS[size] ?? size}
-                </span>
-                <span className="font-black text-amber-400 text-[9px] whitespace-nowrap leading-none">
-                  S/{val!.toFixed(2)}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {priceEntries.length === 0 &&
-          item.price !== undefined &&
-          item.price !== null && (
-            <div className="absolute bottom-0 right-0 bg-black/85 backdrop-blur-sm px-1 py-0.5">
-              <span className="font-black text-amber-400 text-[9px] whitespace-nowrap leading-none">
-                S/{item.price.toFixed(2)}
-              </span>
-            </div>
-          )}
-      </div>
-
-      <div className={isPastas ? "px-1.5 py-1" : "px-1.5 py-0.5"}>
-        <h3
-          className={`${
-            isPastas ? "text-[9.5px]" : "text-[8px]"
-          } font-black text-white tracking-wide leading-tight`}
-        >
+      <div className="flex items-center gap-2 bg-gradient-to-r from-red-800 to-red-900 border-l-4 border-amber-400 px-2 py-1">
+        <span className="text-[12px] leading-none">🍕</span>
+        <h3 className="text-[13px] font-black text-white uppercase tracking-wide leading-tight shrink-0">
           {item.name}
         </h3>
-        {!hideDescription && (
-          <p className="text-[8.5px] text-neutral-300 leading-tight mt-0.5">
+        {item.description && (
+          <p className="flex-1 min-w-0 text-[10px] text-neutral-200 leading-tight line-clamp-2">
             {item.description}
           </p>
         )}
       </div>
+
+      <div className="flex gap-2 p-1.5">
+        <div className="relative w-32 h-28 rounded overflow-hidden border border-amber-500/30 shadow-sm flex-shrink-0 bg-neutral-950">
+          <img
+            src={item.image || "/images/menu/al-tono.jpg"}
+            alt={item.name}
+            className="w-full h-full object-cover"
+            style={{
+              filter: "contrast(1.06) saturate(1.12) brightness(1.05)",
+            }}
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = "/images/menu/al-tono.jpg";
+            }}
+          />
+        </div>
+
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          {priceEntries.length > 0 ? (
+            <div className="flex flex-col divide-y divide-neutral-800">
+              {priceEntries.map(([size, val]) => (
+                <div key={size} className="flex items-center gap-1 py-0.5">
+                  <span className="text-[10.5px] font-bold text-neutral-300 uppercase tracking-wide">
+                    {SIZE_LABELS[size] ?? size}
+                  </span>
+                  <span className="flex-1 border-b border-dotted border-neutral-700 mx-1" />
+                  <span className="text-[11px] font-black text-amber-400 whitespace-nowrap">
+                    S/{val!.toFixed(2)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : item.price !== undefined && item.price !== null ? (
+            <div className="flex items-center gap-1">
+              <span className="text-[10.5px] font-bold text-neutral-300 uppercase tracking-wide">
+                Precio
+              </span>
+              <span className="flex-1 border-b border-dotted border-neutral-700 mx-1" />
+              <span className="text-[11px] font-black text-amber-400 whitespace-nowrap">
+                S/{item.price.toFixed(2)}
+              </span>
+            </div>
+          ) : (
+            <span className="text-[10px] font-semibold text-amber-300 uppercase italic">
+              Próximamente
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SectionBanner({
+  src,
+  alt,
+  objectPosition = "center 50%",
+  fallback = "/decoracion-platos-carta.webp",
+  contain = false,
+  heightClass = "h-[95px]",
+  children,
+}: {
+  src: string;
+  alt: string;
+  objectPosition?: string;
+  fallback?: string;
+  contain?: boolean;
+  heightClass?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div
+      className={`relative w-full ${heightClass} mt-1.5 rounded-md overflow-hidden bg-[#0a0a0a]`}
+      style={
+        contain
+          ? {
+              background:
+                "radial-gradient(ellipse at center, rgba(120,53,15,0.28), #0a0a0a 72%)",
+            }
+          : undefined
+      }
+    >
+      <img
+        src={src}
+        alt={alt}
+        className={`w-full h-full ${contain ? "object-contain p-1.5" : "object-cover"}`}
+        style={{
+          objectPosition,
+          filter: contain
+            ? "drop-shadow(0 2px 12px rgba(0,0,0,0.85))"
+            : "contrast(1.06) saturate(1.1) brightness(1.05)",
+          maskImage:
+            "radial-gradient(ellipse at center, black 55%, transparent 92%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at center, black 55%, transparent 92%)",
+        }}
+        onError={(event) => {
+          if (event.currentTarget.src.endsWith(fallback)) return;
+          event.currentTarget.onerror = null;
+          event.currentTarget.src = fallback;
+        }}
+      />
+      {children}
     </div>
   );
 }
