@@ -26,6 +26,9 @@ export default function MenuPage() {
     menuData.categories[0].id,
   );
 
+  // Subcategoría activa para "Pizzas" ("all" muestra todas)
+  const [activePizzaSubcategory, setActivePizzaSubcategory] = useState("all");
+
   // Estados para la pantalla de portada (Splash Screen)
   const [showCover, setShowCover] = useState(true);
   const [isFading, setIsFading] = useState(false);
@@ -34,11 +37,43 @@ export default function MenuPage() {
     (cat) => cat.id === activeCategory,
   );
 
+  const isPizzas = activeCategory === "pizzas";
+
+  const visibleSections =
+    isPizzas && activePizzaSubcategory !== "all"
+      ? (selectedCategoryData?.sections ?? []).filter(
+          (section) => section.title === activePizzaSubcategory,
+        )
+      : (selectedCategoryData?.sections ?? []);
+
   const handleEnterMenu = () => {
     if (isFading) return;
     setIsFading(true);
     setTimeout(() => setShowCover(false), 700);
   };
+
+  const handleCategoryChange = (categoryId: string) => {
+    setActiveCategory(categoryId);
+    if (categoryId === "pizzas") setActivePizzaSubcategory("all");
+  };
+
+  const handlePizzaSubcategoryChange = (subcategory: string) => {
+    setActivePizzaSubcategory(subcategory);
+    requestAnimationFrame(() => {
+      if (subcategory === "all") {
+        document
+          .getElementById("menu-content")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      document
+        .getElementById(`section-${subcategory}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
+  const getPizzaTabLabel = (title: string) =>
+    title.replace(/^Pizzas\s+/i, "");
 
   return (
     <>
@@ -115,7 +150,7 @@ export default function MenuPage() {
               return (
                 <button
                   key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
+                  onClick={() => handleCategoryChange(category.id)}
                   className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
                     isActive
                       ? "bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg shadow-red-900/50 border border-amber-500/40 scale-105"
@@ -127,12 +162,56 @@ export default function MenuPage() {
               );
             })}
           </nav>
+
+          {/* Sub-pestañas exclusivas para Pizzas */}
+          {isPizzas && (
+            <div className="flex gap-1.5 mt-2 overflow-x-auto pb-0.5 no-scrollbar w-full">
+              <button
+                onClick={() => handlePizzaSubcategoryChange("all")}
+                aria-pressed={activePizzaSubcategory === "all"}
+                className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
+                  activePizzaSubcategory === "all"
+                    ? "bg-red-900/60 border border-red-500/60 text-white font-semibold"
+                    : "bg-zinc-900/90 border border-zinc-800 text-zinc-400"
+                }`}
+              >
+                Todas
+              </button>
+              {selectedCategoryData?.sections.map((section) => {
+                const isSubActive =
+                  section.title === activePizzaSubcategory;
+                return (
+                  <button
+                    key={section.title}
+                    onClick={() =>
+                      handlePizzaSubcategoryChange(section.title)
+                    }
+                    aria-pressed={isSubActive}
+                    className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
+                      isSubActive
+                        ? "bg-red-900/60 border border-red-500/60 text-white font-semibold"
+                        : "bg-zinc-900/90 border border-zinc-800 text-zinc-400"
+                    }`}
+                  >
+                    {getPizzaTabLabel(section.title)}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </header>
 
         {/* Contenido Principal */}
-        <div className="p-4 space-y-6 pb-24 flex-1 w-full relative z-10">
-          {selectedCategoryData?.sections.map((section) => (
-            <section key={section.title} className="space-y-4 w-full">
+        <div
+          id="menu-content"
+          className="p-4 space-y-6 pb-24 flex-1 w-full relative z-10 scroll-mt-56"
+        >
+          {visibleSections.map((section) => (
+            <section
+              key={section.title}
+              id={`section-${section.title}`}
+              className="space-y-4 w-full scroll-mt-56"
+            >
               {/* Banner de Título estilo Pizzería Artesanal */}
               <div className="flex items-center gap-2.5 bg-gradient-to-r from-red-900 via-red-800 to-neutral-900 px-3.5 py-2.5 rounded-xl border-l-4 border-amber-400 border-y border-r border-red-700/60 shadow-xl">
                 <span className="text-base">🍕</span>
@@ -141,8 +220,9 @@ export default function MenuPage() {
                 </h2>
               </div>
 
-              {/* Lista limpia para Adicionales */}
-              {section.title === "Adicionales" ? (
+              {/* Lista limpia para Adicionales y Bebidas/Infusiones */}
+              {section.title === "Adicionales" ||
+              activeCategory === "bebidas-infusiones" ? (
                 <div className="w-full bg-zinc-950/80 backdrop-blur-sm border border-amber-900/40 rounded-2xl shadow-xl overflow-hidden divide-y divide-neutral-800/70">
                   {(section.items as MenuItem[]).map((item) => (
                     <div
