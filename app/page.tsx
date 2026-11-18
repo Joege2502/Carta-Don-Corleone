@@ -119,7 +119,7 @@ export default function MenuPage() {
             </a>
           </div>
 
-          <p className="absolute bottom-10 text-[11px] text-neutral-500 tracking-wide animate-pulse">
+          <p className="absolute bottom-6 left-0 right-0 px-8 text-center text-sm md:text-base text-zinc-200 tracking-wide leading-relaxed drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] animate-pulse">
             Toca en cualquier parte para ingresar a la carta
           </p>
         </div>
