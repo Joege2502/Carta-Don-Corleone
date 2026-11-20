@@ -5,6 +5,45 @@
   },
   "categories": [
     {
+      "id": "promociones",
+      "name": "PROMOCIONES",
+      "sections": [
+        {
+          "title": "Promociones",
+          "items": [
+            {
+              "id": "promo-duo-familiar-clasicos",
+              "name": "DÚO FAMILIAR CLÁSICOS",
+              "description": "2 Pizzas Familiares Clásicas (8 porciones) + 1 Gaseosa 1/2 litro",
+              "price": 69.9,
+              "promo": true
+            },
+            {
+              "id": "promo-duo-mediano-clasicos",
+              "name": "DÚO MEDIANO CLÁSICOS",
+              "description": "2 Pizzas Medianas Clásicas + 1 Gaseosa 1/2 litro",
+              "price": 59.9,
+              "promo": true
+            },
+            {
+              "id": "promo-duo-familiar-especial",
+              "name": "DÚO FAMILIAR ESPECIAL",
+              "description": "2 Pizzas Familiares (8 porciones) a elegir entre: Don Corleone, Americana Especial, Americana Burger y A los 3 Quesos",
+              "price": 89.9,
+              "promo": true
+            },
+            {
+              "id": "promo-duo-personal-clasicos",
+              "name": "DÚO PERSONAL CLÁSICOS",
+              "description": "2 Pizzas Personales Clásicas (4 porciones)",
+              "price": 39.9,
+              "promo": true
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "entradas-pastas",
       "name": "Entradas y Pastas",
       "sections": [

@@ -19,6 +19,7 @@ interface MenuItem {
   image?: string;
   price?: number | null;
   prices?: PizzaPrices;
+  promo?: boolean;
 }
 
 export default function MenuPage() {
@@ -243,7 +244,30 @@ export default function MenuPage() {
               ) : (
                 /* Listado de Tarjetas */
                 <div className="space-y-4 w-full">
-                  {(section.items as MenuItem[]).map((item) => (
+                  {(section.items as MenuItem[]).map((item) =>
+                    item.promo ? (
+                      <div
+                        key={item.id}
+                        className="relative w-full border border-amber-500/40 bg-zinc-900/90 rounded-2xl p-4 pt-9 shadow-xl overflow-hidden hover:border-amber-400/60 transition-all"
+                      >
+                        <span className="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl border-l border-b border-amber-500/40 shadow-md">
+                          ¡PROMOCIÓN!
+                        </span>
+                        <h3 className="text-base font-black text-white tracking-wide pr-20">
+                          {item.name}
+                        </h3>
+                        <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                          {item.description}
+                        </p>
+                        <div className="mt-3 flex justify-end">
+                          <span className="text-amber-400 font-bold text-lg">
+                            {item.price !== null && item.price !== undefined
+                              ? `S/ ${item.price.toFixed(2)}`
+                              : "Próximamente"}
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
                     <div
                       key={item.id}
                       className="w-full bg-neutral-950/90 backdrop-blur-sm border border-amber-900/40 rounded-2xl p-3.5 shadow-xl flex flex-col gap-3 hover:border-red-600/40 transition-all"
