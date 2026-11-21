@@ -248,23 +248,43 @@ export default function MenuPage() {
                     item.promo ? (
                       <div
                         key={item.id}
-                        className="relative w-full border border-amber-500/40 bg-zinc-900/90 rounded-2xl p-4 pt-9 shadow-xl overflow-hidden hover:border-amber-400/60 transition-all"
+                        className="relative w-full border border-amber-500/40 bg-zinc-900/90 rounded-2xl shadow-xl overflow-hidden hover:border-amber-400/60 transition-all"
                       >
-                        <span className="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl border-l border-b border-amber-500/40 shadow-md">
+                        <span className="absolute top-0 right-0 z-20 bg-red-600 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl border-l border-b border-amber-500/40 shadow-md">
                           ¡PROMOCIÓN!
                         </span>
-                        <h3 className="text-base font-black text-white tracking-wide pr-20">
-                          {item.name}
-                        </h3>
-                        <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
-                          {item.description}
-                        </p>
-                        <div className="mt-3 flex justify-end">
-                          <span className="text-amber-400 font-bold text-lg">
-                            {item.price !== null && item.price !== undefined
-                              ? `S/ ${item.price.toFixed(2)}`
-                              : "Próximamente"}
-                          </span>
+
+                        {/* Imagen superior de las dos pizzas (sin gaseosa) */}
+                        <div className="relative w-full aspect-[16/10] overflow-hidden bg-neutral-900">
+                          <img
+                            src={item.image || "/images/menu/don-corleone.webp"}
+                            alt={item.name}
+                            loading="lazy"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src =
+                                "/images/menu/don-corleone.webp";
+                            }}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/20 to-transparent" />
+                        </div>
+
+                        {/* Título, descripción y precio debajo de la imagen */}
+                        <div className="p-4">
+                          <h3 className="text-base font-black text-white tracking-wide pr-20">
+                            {item.name}
+                          </h3>
+                          <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                            {item.description}
+                          </p>
+                          <div className="mt-3 flex justify-end">
+                            <span className="text-amber-400 font-bold text-lg">
+                              {item.price !== null && item.price !== undefined
+                                ? `S/ ${item.price.toFixed(2)}`
+                                : "Próximamente"}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ) : (

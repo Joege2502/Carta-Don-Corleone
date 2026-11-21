@@ -15,6 +15,7 @@
               "id": "promo-duo-familiar-clasicos",
               "name": "DÚO FAMILIAR CLÁSICOS",
               "description": "2 Pizzas Familiares Clásicas (8 porciones) + 1 Gaseosa 1/2 litro",
+              "image": "/images/menu/duo-familiar-mediano-personal-clasicos.webp",
               "price": 69.9,
               "promo": true
             },
@@ -22,6 +23,7 @@
               "id": "promo-duo-mediano-clasicos",
               "name": "DÚO MEDIANO CLÁSICOS",
               "description": "2 Pizzas Medianas Clásicas + 1 Gaseosa 1/2 litro",
+              "image": "/images/menu/duo-familiar-mediano-personal-clasicos.webp",
               "price": 59.9,
               "promo": true
             },
@@ -29,6 +31,7 @@
               "id": "promo-duo-familiar-especial",
               "name": "DÚO FAMILIAR ESPECIAL",
               "description": "2 Pizzas Familiares (8 porciones) a elegir entre: Don Corleone, Americana Especial, Americana Burger y A los 3 Quesos",
+              "image": "/images/menu/duo-familiar-especial.webp",
               "price": 89.9,
               "promo": true
             },
@@ -36,6 +39,7 @@
               "id": "promo-duo-personal-clasicos",
               "name": "DÚO PERSONAL CLÁSICOS",
               "description": "2 Pizzas Personales Clásicas (4 porciones)",
+              "image": "/images/menu/duo-familiar-mediano-personal-clasicos.webp",
               "price": 39.9,
               "promo": true
             }
@@ -124,7 +128,7 @@
                 "personal": 20.0,
                 "mediana": 32.0,
                 "familiar": 45.0,
-                "gigante": 55.0
+                "gigante": 60.0
               }
             },
             {
@@ -136,7 +140,7 @@
                 "personal": 20.0,
                 "mediana": 30.0,
                 "familiar": 40.0,
-                "gigante": 50.0
+                "gigante": 55.0
               }
             },
             {
@@ -220,7 +224,7 @@
                 "personal": 22.0,
                 "mediana": 33.0,
                 "familiar": 45.0,
-                "gigante": 55.0
+                "gigante": 60.0
               }
             },
             {
@@ -256,7 +260,19 @@
                 "personal": 22.0,
                 "mediana": 33.0,
                 "familiar": 45.0,
-                "gigante": 60.0
+                "gigante": 65.0
+              }
+            },
+            {
+              "id": "pollo-gourmet",
+              "name": "POLLO GOURMET",
+              "description": "Q. Mozzarella, pollo, jamón y champiñones",
+              "image": "/images/menu/pollo-gourmet.webp",
+              "prices": {
+                "personal": 23.0,
+                "mediana": 35.0,
+                "familiar": 47.0,
+                "gigante": 65.0
               }
             },
             {
@@ -364,7 +380,7 @@
                 "personal": 20.0,
                 "mediana": 33.0,
                 "familiar": 42.0,
-                "gigante": 55.0
+                "gigante": 60.0
               }
             }
           ]
@@ -585,19 +601,19 @@
               "id": "jugo-papaya",
               "name": "Jugo de Papaya",
               "image": "/images/menu/jugo-papaya.webp",
-              "price": 10.0
+              "price": 11.9
             },
             {
               "id": "jugo-mango-leche",
               "name": "Mango con Leche",
               "image": "/images/menu/jugo-mango-leche.webp",
-              "price": 13.0
+              "price": 14.9
             },
             {
               "id": "jugo-mango-maracuya",
               "name": "Mango con Maracuyá",
               "image": "/images/menu/jugo-mango-maracuya.jpg",
-              "price": 13.0
+              "price": 14.9
             },
             {
               "id": "jugo-fresa-leche",
